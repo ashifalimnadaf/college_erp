@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teacher Dashboard</title>
+  <style>
+    /* ===== Global Reset & Fonts ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(120deg, #f6f7fb, #eef1f7);
+      min-height: 100vh;
+      color: #333;
+      overflow-x: hidden;
+    }
+
+    /* ===== Header ===== */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(90deg, #3f2b96, #a8c0ff);
+      color: white;
+      padding: 18px 40px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 3px 15px rgba(0, 0, 0, 0.15);
+      border-bottom: 2px solid rgba(255,255,255,0.2);
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-section img {
+      width: 50px;
+      border-radius: 50%;
+      background: #fff;
+      padding: 4px;
+    }
+
+    .logo-section h1 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .user-section a {
+      color: white;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 16px;
+      border-radius: 30px;
+      background: rgba(255, 255, 255, 0.15);
+      transition: all 0.3s ease;
+    }
+
+    .user-section a:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .user-img {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      border: 2px solid #ffd369;
+      object-fit: cover;
+    }
+
+    .username {
+      font-weight: 500;
+      font-size: 1rem;
+    }
+
+    /* ===== Main Content ===== */
+    main {
+      margin: 60px auto;
+      padding: 40px 20px;
+      max-width: 1100px;
+      text-align: center;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .user-info {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #3f2b96;
+      margin-bottom: 40px;
+    }
+
+    /* ===== Dashboard Cards ===== */
+    .dashboard-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 25px;
+    }
+
+    .dashboard-cards a {
+      text-decoration: none;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 30px 25px;
+      text-align: left;
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+      cursor: pointer;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: -80%;
+      left: -80%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(135deg, #3f2b96, #a8c0ff);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      z-index: 0;
+      border-radius: 50%;
+    }
+
+    .card:hover::before {
+      opacity: 0.15;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 10px 25px rgba(63, 43, 150, 0.2);
+    }
+
+    .card h3 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #3f2b96;
+      margin-bottom: 8px;
+      z-index: 1;
+      position: relative;
+    }
+
+    .card p {
+      font-size: 1rem;
+      color: #555;
+      z-index: 1;
+      position: relative;
+    }
+
+    /* ===== Hover Glow Effect ===== */
+    .card:hover h3,
+    .card:hover p {
+      color: #2f2771;
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+      }
+
+      .logo-section h1 {
+        font-size: 1rem;
+      }
+
+      .user-info {
+        font-size: 1.5rem;
+      }
+
+      .dashboard-cards {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+     <div class="logo-section">
+      <img src="https://tse4.mm.bing.net/th/id/OIP.LRim0dz7N2w2dTImQCh08gHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" alt="College Logo" class="logo">
+      <h1>AGMR COLLEGE OF ENGINEERING AND TECHNOLOGY</h1>
+    </div>
+    <div class="user-section">
+        <a href="{{ url_for('student_account') }}">
+          <img src="{{ url_for('static', filename='images/user_avatar.png') }}" alt="User Avatar" class="user-img">
+          <span class="username">{{ user.name }}</span>
+        </a>
+      </div>
+    </header>
+
+    <main>
+      <div class="user-info">
+        <span>Welcome, {{ user.name }}</span>
+      </div>
+
+      <div class="content">
+        <div class="dashboard-cards">
+          <a href="{{ url_for('teacher_attendance') }}" class="card-btn">
+          <div class="card">
+            <h3>Attendance Management</h3>
+            <p>Mark and track student attendance</p>
+          </div></a>
+          <a href="{{ url_for('teacher_grades') }}" class="card-btn">
+          <div class="card">
+            <h3>Grade Management</h3>
+            <p>Update and view student grades</p>
+          </div></a>
+          <a href="{{ url_for('teacher_notes') }}" class="card-btn">
+          <div class="card">
+            <h3>Notes & Resources</h3>
+            <p>Upload study materials for students</p>
+          </div></a>
+          <a href="{{ url_for('teacher_syllabus') }}" class="card-btn">
+          <div class="card">
+            <h3>Syllabus</h3>
+            <p>Create and update course syllabus</p>
+          </div></a>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

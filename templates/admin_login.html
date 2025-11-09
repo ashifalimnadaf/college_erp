@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin ERP Login</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-box">
+      <img src="{{ url_for('static', filename='clg_logo.webp') }}" alt="College Logo" class="logo">
+      <h2>College ERP Login</h2>
+      <p class="subtitle">Administrator Access Portal</p>
+
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <div class="alert alert-danger">
+            {% for message in messages %}
+              {{ message }}
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+
+      <form id="loginForm" method="POST" action="{{ url_for('admin_login') }}">
+        <div class="input-group">
+          <label for="username">Admin Username</label>
+          <input type="text" id="username" name="username" placeholder="Enter admin ID" required />
+        </div>
+
+        <div class="input-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="Enter password" required />
+        </div>
+
+        <div class="options">
+          <a href="#" class="forgot-link">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="login-btn">Admin Login</button>
+      </form>
+
+      <p class="footer">© 2025 Your College Name. All rights reserved.</p>
+      <p class="switch-login">
+        <a href="{{ url_for('teacher_login') }}">Teacher Login</a> | 
+        <a href="{{ url_for('student_login') }}">Student Login</a>
+      </p>
+    </div>
+  </div>
+</body>
+</html>
