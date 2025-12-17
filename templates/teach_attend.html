@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teacher Attendance Management</title>
+  <style>
+/* 🌟 Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", "Segoe UI", sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #f4f6ff, #e2e6ff);
+  color: #333;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 🌈 Header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(90deg, #3f2b96, #a8c0ff);
+  color: #fff;
+  padding: 20px 40px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(8px);
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-section img {
+  width: 52px;
+  border-radius: 50%;
+  background: #fff;
+  padding: 5px;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+}
+
+.logo-section h1 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* 👤 User Section */
+.user-section a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.1);
+  transition: 0.3s ease;
+}
+
+.user-section a:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+}
+
+.user-img {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 2px solid #ffd369;
+  object-fit: cover;
+}
+
+.username {
+  font-weight: 500;
+}
+
+/* 📄 Main Content */
+main {
+  flex: 1;
+  width: 90%;
+  max-width: 950px;
+  margin: 60px auto;
+  padding: 20px;
+}
+
+.back-link {
+  margin-bottom: 1rem;
+  font-size: 1.05rem;
+}
+
+.back-link a {
+  color: #3f2b96;
+  text-decoration: none;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.back-link a:hover {
+  text-decoration: underline;
+  color: #6a4eff;
+}
+
+/* 💠 Content Card */
+.content {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  padding: 40px 45px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  animation: fadeIn 0.6s ease;
+  transition: box-shadow 0.3s ease;
+}
+
+.content:hover {
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 🏷️ Headings */
+h2 {
+  color: #3f2b96;
+  margin-bottom: 25px;
+  border-bottom: 3px solid #a8c0ff;
+  display: inline-block;
+  padding-bottom: 6px;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+/* 📋 Form Styles */
+.form-group {
+  margin-bottom: 25px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #444;
+}
+
+select, input[type="date"] {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: #fdfdfd;
+}
+
+select:focus, input[type="date"]:focus {
+  border-color: #3f2b96;
+  box-shadow: 0 0 8px rgba(63, 43, 150, 0.3);
+}
+
+/* 📊 Table */
+.attendance-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 25px;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.attendance-table th {
+  background: linear-gradient(90deg, #3f2b96, #6a4eff);
+  color: #fff;
+  padding: 12px 15px;
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 0.9rem;
+}
+
+.attendance-table td {
+  padding: 10px 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.attendance-table tr:nth-child(even) {
+  background-color: #f9f9ff;
+}
+
+.attendance-table tr:hover {
+  background-color: #eef2ff;
+  transform: scale(1.01);
+  transition: all 0.3s ease;
+}
+
+/* ✅ Buttons */
+.submit-btn {
+  display: inline-block;
+  margin-top: 25px;
+  background: linear-gradient(90deg, #3f2b96, #6a4eff);
+  color: #fff;
+  border: none;
+  padding: 12px 25px;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.submit-btn:hover {
+  background: linear-gradient(90deg, #6a4eff, #3f2b96);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(63, 43, 150, 0.3);
+}
+
+/* 🔄 Status & Alerts */
+.loading {
+  color: #3f2b96;
+  font-style: italic;
+  margin: 10px 0;
+}
+
+.alert {
+  background-color: #e8fff0;
+  color: #2f855a;
+  padding: 12px 18px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  border-left: 5px solid #38a169;
+  font-weight: 500;
+}
+
+/* 📱 Responsive */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+    padding: 20px;
+  }
+
+  main {
+    width: 95%;
+  }
+
+  .content {
+    padding: 25px;
+  }
+
+  .attendance-table th, .attendance-table td {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+
+  .submit-btn {
+    width: 100%;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+  }
+}
+</style>
+
+
+</head>
+<body>
+  <div class="container">
+    <header>
+     <div class="logo-section">
+      <img src="https://tse4.mm.bing.net/th/id/OIP.LRim0dz7N2w2dTImQCh08gHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" alt="College Logo" class="logo">
+      <h1>AGMR COLLEGE OF ENGINEERING AND TECHNOLOGY</h1>
+    </div>
+    <div class="user-section">
+        <a href="{{ url_for('teacher_profile') }}">
+          <img src="https://th.bing.com/th/id/OIP.ukyBvqWlVM8RE5pSjQNchwHaHa?w=191&h=191&c=7&r=0&o=7&cb=ucfimg2&dpr=1.3&pid=1.7&rm=3&ucfimg=1" alt="User Avatar" class="user-img">
+          <span class="username">{{ user.name }}</span>
+        </a>
+      </div>
+    </header>
+
+    <main>
+      <div class="back-link">
+      <a href="{{ url_for('teacher_dashboard') }}">← Back to Dashboard</a></div>
+
+      <div class="content">
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="alert alert-success">
+              {% for message in messages %}
+                {{ message }}
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        <div class="attendance-form">
+          <h2>Mark Attendance</h2>
+          <form method="POST" action="{{ url_for('teacher_attendance') }}">
+            <div class="form-group">
+              <label for="class_id">Select Class:</label>
+              <select name="class_id" id="class_id" required>
+                <option value="">-- Select Class --</option>
+                {% for class in classes %}
+                <option value="{{ class }}">{{ class }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="date">Date:</label>
+              <input type="date" name="date" id="date" required>
+            </div>
+
+            <div id="student-list" class="student-list">
+              <h3>Students</h3>
+              <div class="loading">Loading students...</div>
+              <table class="attendance-table" style="display: none;">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Present</th>
+                    <th>Absent</th>
+                  </tr>
+                </thead>
+                <tbody id="student-rows">
+                  <!-- Student rows will be added here dynamically -->
+                </tbody>
+              </table>
+              <button type="submit" class="submit-btn">Save Attendance</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    document.getElementById('class_id').addEventListener('change', function() {
+      const classId = this.value;
+      if (!classId) return;
+      
+      const studentList = document.getElementById('student-list');
+      const loadingDiv = studentList.querySelector('.loading');
+      const table = studentList.querySelector('.attendance-table');
+      const studentRows = document.getElementById('student-rows');
+      
+      loadingDiv.style.display = 'block';
+      table.style.display = 'none';
+      
+      // Fetch students for the selected class (by class name)
+      fetch(`/api/students/${encodeURIComponent(classId)}`)
+        .then(response => response.json())
+        .then(data => {
+          const students = data.students || [];
+          studentRows.innerHTML = '';
+          
+          students.forEach(student => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${student.name}</td>
+              <td><input type="radio" name="student_${student._id}" value="present" checked></td>
+              <td><input type="radio" name="student_${student._id}" value="absent"></td>
+            `;
+            studentRows.appendChild(row);
+          });
+          
+          loadingDiv.style.display = 'none';
+          table.style.display = 'table';
+        })
+        .catch(error => {
+          console.error('Error fetching students:', error);
+          loadingDiv.textContent = 'Error loading students. Please try again.';
+        });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin | Courses</title>
+  <style>
+    * {margin: 0; padding: 0;
+      
+      box-sizing: border-box; font-family: 'Poppins', 'Segoe UI', sans-serif; }
+    body { background: #f7f9fc; color: #2c3e50; }
+    .container { width: 95%; max-width: 1100px; margin: 40px auto; }
+    h1 { color: #3f2b96; }
+    .card { background: #fff; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); padding: 20px; margin-top: 20px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    label { display: block; margin-bottom: 6px; color: #444; font-weight: 600; }
+    input, select, textarea { width: 100%; padding: 10px 12px; border: 1px solid #ccc; border-radius: 8px; }
+    .btn { border: none; border-radius: 8px; padding: 10px 14px; cursor: pointer; color: #fff; }
+    .btn-primary { background: linear-gradient(90deg,#3f2b96,#6a4eff); }
+    .btn-danger { background: linear-gradient(90deg,#e74c3c,#ff7675); }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border-bottom: 1px solid #eee; padding: 10px; text-align: left; }
+    .topbar { display:flex; justify-content: space-between; align-items: center; }
+    .topbar a { color:#3f2b96; text-decoration:none; }
+    .alert { padding: 12px; border-radius: 8px; margin-bottom: 12px; }
+    .alert-success { background: #e6ffed; color: #276749; }
+    .alert-danger { background: #ffe6e6; color: #b91c1c; }
+
+    header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, #3f2b96, #a8c0ff);
+  color: white;
+  padding: 20px 40px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo-section img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.logo-section h1 {
+  color: white;
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.user-section a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: white;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.user-section a:hover {
+  color: #ffeb3b;
+}
+
+.user-img {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+}
+.back-link {
+  margin: 30px 0px 50px 30px;
+}
+
+.back-link a {
+  text-decoration: none;
+  color: #3f51b5;
+  font-weight: 500;
+  transition: 0.3s ease;
+}
+
+.back-link a:hover {
+  text-decoration: underline;
+  color: #2c3eaa;
+}
+  </style>
+</head>
+<body>
+<header>
+      <div class="logo-section">
+      <img src="https://tse4.mm.bing.net/th/id/OIP.LRim0dz7N2w2dTImQCh08gHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" alt="College Logo" class="logo">
+      <h1>AGMR COLLEGE OF ENGINEERING AND TECHNOLOGY</h1>
+    </div>
+    <div class="user-section">
+   
+      </div>
+    </header>
+
+    <main>
+    <div class="back-link">
+      <a href="{{ url_for('admin_dashboard') }}">← Back to Dashboard</a></div>
+
+  <div class="container">
+    <div class="topbar">
+      <h1>Courses</h1>
+      
+    </div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <div class="card">
+      <h3>Create Course</h3>
+      <form method="POST" action="{{ url_for('admin_courses_create') }}" class="grid">
+        <div><label>Code</label><input name="code" required></div>
+        <div><label>Name</label><input name="name" required></div>
+        <div><label>Department</label><input name="department" required></div>
+        <div><label>Credits</label><input name="credits" type="number" min="0" required></div>
+        <div><label>Semester</label><input name="semester" required></div>
+        <div><label>Description</label><textarea name="description"></textarea></div>
+        <div style="grid-column: span 2;">
+          <label>Instructors</label>
+          <select name="instructors" multiple size="5" style="width:100%;">
+            {% for t in teachers %}
+              <option value="{{ t._id }}">{{ t.name }} ({{ t.username }})</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div>
+          <button class="btn btn-primary" type="submit" style="margin-top:26px;">Create</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="card">
+      <h3>All Courses</h3>
+      <div style="overflow-x:auto;">
+        <table>
+          <thead>
+            <tr><th>Code</th><th>Name</th><th>Dept</th><th>Credits</th><th>Semester</th><th>Actions</th></tr>
+          </thead>
+          <tbody>
+            {% for c in courses %}
+            <tr>
+              <td>{{ c.code }}</td>
+              <td>{{ c.name }}</td>
+              <td>{{ c.department }}</td>
+              <td>{{ c.credits }}</td>
+              <td>{{ c.semester }}</td>
+              <td>
+                <form method="POST" action="{{ url_for('admin_courses_edit', course_id=c._id) }}" style="display:grid; grid-template-columns:repeat(6,1fr); gap:8px;">
+                  <input name="name" value="{{ c.name }}">
+                  <input name="department" value="{{ c.department }}">
+                  <input name="credits" type="number" value="{{ c.credits }}">
+                  <input name="semester" value="{{ c.semester }}">
+                  <input name="description" value="{{ c.description }}">
+                  <button class="btn btn-primary" type="submit">Save</button>
+                </form>
+                <form method="POST" action="{{ url_for('admin_courses_delete', course_id=c._id) }}" style="display:inline; margin-top:8px;" onsubmit="return confirm('Delete this course?');">
+                  <button class="btn btn-danger" type="submit">Delete</button>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  </main>
+</body>
+</html>

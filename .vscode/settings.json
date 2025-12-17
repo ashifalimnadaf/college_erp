@@ -1,0 +1,8 @@
+{
+    "mdb.presetConnections": [
+        {
+            "name": "Preset Connection",
+            "connectionString": "mongodb+srv://college_erp:clg_erp@cluster0.l3g4xjz.mongodb.net/"
+        }
+    ]
+}

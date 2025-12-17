@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin | Faculty</title>
+  <style>
+    * { box-sizing: border-box; font-family: 'Poppins', 'Segoe UI', sans-serif; }
+    body { background: #f7f9fc; color: #2c3e50; }
+    .container { width: 95%; max-width: 1100px; margin: 40px auto; }
+    h1 { color: #3f2b96; }
+    .card { background: #fff; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); padding: 20px; margin-top: 20px; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border-bottom: 1px solid #eee; padding: 10px; text-align: left; vertical-align: top; }
+    label { display: block; margin-bottom: 6px; color: #444; font-weight: 600; }
+    input, textarea { width: 100%; padding: 10px 12px; border: 1px solid #ccc; border-radius: 8px; }
+    .btn { border: none; border-radius: 8px; padding: 10px 14px; cursor: pointer; color: #fff; }
+    .btn-primary { background: linear-gradient(90deg,#3f2b96,#6a4eff); }
+    .topbar { display:flex; justify-content: space-between; align-items: center; }
+    .topbar a { color:#3f2b96; text-decoration:none; }
+    .alert { padding: 12px; border-radius: 8px; margin-bottom: 12px; }
+    .alert-success { background: #e6ffed; color: #276749; }
+    .alert-danger { background: #ffe6e6; color: #b91c1c; }
+
+        header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, #3f2b96, #a8c0ff);
+  color: white;
+  padding: 20px 40px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo-section img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.logo-section h1 {
+  color: white;
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.user-section a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: white;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.user-section a:hover {
+  color: #ffeb3b;
+}
+
+.user-img {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+}
+.back-link {
+  margin: 30px 0px 50px 30px;
+}
+
+.back-link a {
+  text-decoration: none;
+  color: #3f51b5;
+  font-weight: 500;
+  transition: 0.3s ease;
+}
+
+.back-link a:hover {
+  text-decoration: underline;
+  color: #2c3eaa;
+}
+  </style>
+</head>
+<body>
+<header>
+      <div class="logo-section">
+      <img src="https://tse4.mm.bing.net/th/id/OIP.LRim0dz7N2w2dTImQCh08gHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" alt="College Logo" class="logo">
+      <h1>AGMR COLLEGE OF ENGINEERING AND TECHNOLOGY</h1>
+    </div>
+    <div class="user-section">
+      
+      </div>
+    </header>
+<main>
+    <div class="back-link">
+      <a href="{{ url_for('admin_dashboard') }}">← Back to Dashboard</a></div>
+
+  <div class="container">
+    <div class="topbar">
+      <h1>Faculty</h1>
+      
+    </div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <div class="card">
+      <h3>Create Teacher</h3>
+      <form method="POST" action="{{ url_for('admin_faculty_create') }}" style="display:grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+        <div><label>Username</label><input name="username" required></div>
+        <div><label>Password</label><input name="password" type="password" required></div>
+        <div><label>Name</label><input name="name" required></div>
+        <div><label>Email</label><input name="email" type="email"></div>
+        <div style="grid-column: span 2;"><label>Subjects (comma-separated)</label><input name="subjects" placeholder="e.g. Mathematics, Physics"></div>
+        <div style="grid-column: span 2;"><label>Classes (comma-separated)</label><input name="classes" placeholder="e.g. 3rd Year - ECE A"></div>
+        <div>
+          <button class="btn btn-primary" type="submit" style="margin-top:26px;">Create</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="card">
+      <div style="overflow-x:auto;">
+        <table>
+          <thead>
+            <tr><th>Name</th><th>Username</th><th>Email</th><th>Subjects</th><th>Classes</th><th>Assign</th></tr>
+          </thead>
+          <tbody>
+            {% for t in teachers %}
+            <tr>
+              <td>{{ t.name }}</td>
+              <td>{{ t.username }}</td>
+              <td>{{ t.email }}</td>
+              <td>{% for s in t.subjects or [] %}<span>{{ s }}</span>{% if not loop.last %}, {% endif %}{% endfor %}</td>
+              <td>{% for c in t.classes or [] %}<span>{{ c }}</span>{% if not loop.last %}, {% endif %}{% endfor %}</td>
+              <td>
+                <form method="POST" action="{{ url_for('admin_faculty_assign', teacher_id=t._id) }}" style="display:grid; grid-template-columns:1fr 1fr auto; gap:8px;">
+                  <div>
+                    <label>Subjects (comma-separated)</label>
+                    <input name="subjects" placeholder="e.g. Mathematics, Physics">
+                  </div>
+                  <div>
+                    <label>Classes (comma-separated)</label>
+                    <input name="classes" placeholder="e.g. 3rd Year - ECE A">
+                  </div>
+                  <div style="align-self:end;">
+                    <button class="btn btn-primary" type="submit">Assign</button>
+                  </div>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  </main>
+</body>
+</html>

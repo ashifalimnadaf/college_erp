@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>College ERP System</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    /* Navigation Bar */
+    .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(90deg, #3f2b96, #a8c0ff);
+    color: #fff;
+    padding: 18px 40px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    }
+    body {
+      background-image: url(https://th.bing.com/th/id/R.3798ff40d2c811d1754cff99e0fabbf1?rik=KkFP5oNp%2byc4Vw&riu=http%3a%2f%2fwww.agmrcet.ac.in%2fimg%2fslider%2f6.png&ehk=s5JubllWIS7FED71N3hcy0BRpS7tURy0pqBrc2TBYLs%3d&risl=&pid=ImgRaw&r=0);
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo img {
+      width: 50px;
+    }
+
+    .logo h1 {
+      font-size: 1.3em;
+      font-weight: 600;
+    }
+    /* Hero Section */
+    .hero {
+      height: 75vh;
+      color: rgb(247, 255, 6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 0 20px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .tagline {
+      font-size: 1.2rem;
+      opacity: 0.8;
+    }
+    .login-options {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 50px;
+    }
+    .login-card {
+      display: inline-table;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      padding: 50px;
+      width: 320px;
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+    .login-card:hover {
+      transform: translateY(-10px);
+    }
+    .login-card h2 {
+      color: #2c3e50;
+      margin-bottom: 20px;
+    }
+    .login-card img  {
+      width: 80px;
+      margin-bottom: 15px;
+    }
+    .btn {
+      display: inline-block;
+      color: white;
+      padding: 12px 30px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+    
+    footer {
+      background: #3f2b96;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9em;
+    }
+    
+    footer p {
+      margin: 5px 0;
+    }
+
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo">
+      <img src="https://tse4.mm.bing.net/th/id/OIP.LRim0dz7N2w2dTImQCh08gHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" alt="College Logo">
+      <h1>AGMR COLLEGE OF ENGINEERING AND TECHNOLOGY</h1>
+    </div>
+  </header>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h2>Welcome to <span>My College ERP</span></h2>
+      <p>Manage academics, staff, and students efficiently in one place.</p>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="login-options">
+       <a href="{{ url_for('student_login') }}" class="btn">
+      <div class="login-card">
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135755.png" alt="Student Portal">
+        <h2>Student Login</h2>
+      </div>
+      </a>
+      <a href="{{ url_for('teacher_login') }}" class="btn">
+      <div class="login-card">
+        <img src="https://cdn-icons-png.flaticon.com/512/1995/1995574.png" alt="Faculty Portal">
+        <h2>Teacher Login</h2>
+      </div>
+      </a>
+      <a href="{{ url_for('admin_login') }}" class="btn">
+      <div class="login-card">
+        <img src="https://cdn-icons-png.flaticon.com/512/2247/2247871.png" alt="Faculty Portal">
+        <h2>Admin Login</h2>
+      </div>
+      </a>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2023 AGMRCET College ERP System. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>

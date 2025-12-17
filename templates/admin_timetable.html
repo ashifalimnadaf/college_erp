@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin | Timetable</title>
+  <style>
+    * {margin:0; padding:0; box-sizing:border-box; font-family:'Poppins','Segoe UI',sans-serif}
+    body { background:#f7f9fc; color:#2c3e50 }
+    .container { width:95%; max-width:1100px; margin:40px auto }
+    h1 { color:#3f2b96 }
+    .card { background:#fff; border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.08); padding:20px; margin-top:20px }
+    .grid { display:grid; grid-template-columns:1fr 1fr; gap:20px }
+    label { display:block; margin-bottom:6px; color:#444; font-weight:600 }
+    input, select { width:100%; padding:10px 12px; border:1px solid #ccc; border-radius:8px }
+    .btn { border:none; border-radius:8px; padding:10px 14px; cursor:pointer; color:#fff }
+    .btn-primary { background: linear-gradient(90deg,#3f2b96,#6a4eff) }
+    .btn-danger { background: linear-gradient(90deg,#e74c3c,#ff7675) }
+    table { width:100%; border-collapse:collapse }
+    th, td { border-bottom:1px solid #eee; padding:10px; text-align:left }
+    .back-link { margin: 20px 0 }
+    .back-link a { color:#3f2b96; text-decoration:none }
+    .small { font-size: 0.9rem; color: #555 }
+  </style>
+</head>
+<body>
+<header>
+  <div class="logo-section">
+    <img src="https://tse4.mm.bing.net/th/id/OIP.LRim0dz7N2w2dTImQCh08gHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" alt="College Logo" class="logo" style="width:50px;height:50px;border-radius:50%">
+    <h1>AGMR COLLEGE OF ENGINEERING AND TECHNOLOGY</h1>
+  </div>
+</header>
+<main>
+  <div class="container">
+    <div class="back-link"><a href="{{ url_for('admin_dashboard') }}">← Back to Dashboard</a></div>
+    <h1>Timetable</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <div class="card">
+      <h3>Select Department, Year & Division</h3>
+      <form method="GET" action="{{ url_for('admin_timetable') }}" class="grid">
+        <div>
+          <label>Department</label>
+          <select name="department" required>
+            <option value="">Select Department</option>
+            {% for d in departments %}
+              <option value="{{ d }}" {% if selected_department==d %}selected{% endif %}>{{ d }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div>
+          <label>Year</label>
+          <select name="year" required>
+            <option value="">Select Year</option>
+            {% for y in years %}
+              <option value="{{ y }}" {% if selected_year==y %}selected{% endif %}>{{ y }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div>
+          <label>Division</label>
+          <select name="division">
+            <option value="">Select Division</option>
+            {% for div in divisions %}
+              <option value="{{ div }}" {% if selected_div==div %}selected{% endif %}>{{ div }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div><button class="btn btn-primary" type="submit" style="margin-top:26px">Load</button></div>
+      </form>
+    </div>
+
+    {% if selected_department and selected_year and selected_div %}
+    <div class="card">
+      <h3>Time Slots</h3>
+      <form method="POST" action="{{ url_for('admin_timetable_update_slots') }}" class="grid">
+        <input type="hidden" name="department" value="{{ selected_department }}">
+        <input type="hidden" name="year" value="{{ selected_year }}">
+        <input type="hidden" name="division" value="{{ selected_div }}">
+        <div style="grid-column: span 2">
+          <label>Comma-separated time slots</label>
+          <input name="time_slots" placeholder="e.g. 9:00 - 10:00, 10:00 - 11:00" value="{{ timetable.time_slots | join(', ') if timetable and timetable.time_slots }}">
+          <div class="small">These define rows in the timetable</div>
+        </div>
+        <div><button class="btn btn-primary" type="submit" style="margin-top:26px">Save Slots</button></div>
+      </form>
+    </div>
+
+    <div class="card">
+      <h3>Add Entry</h3>
+      <form method="POST" action="{{ url_for('admin_timetable_add_entry') }}" class="grid">
+        <input type="hidden" name="department" value="{{ selected_department }}">
+        <input type="hidden" name="year" value="{{ selected_year }}">
+        <input type="hidden" name="division" value="{{ selected_div }}">
+        <div><label>Day</label>
+          <select name="day" required>
+            {% for d in ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'] %}
+            <option value="{{ d }}">{{ d }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div><label>Time Slot</label>
+          <select name="time_slot" required>
+            {% for ts in (timetable.time_slots or []) %}
+            <option value="{{ ts }}">{{ ts }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div><label>Subject</label><input name="subject" required></div>
+        <div><label>Teacher</label><input name="teacher"></div>
+        <div><label>Room</label><input name="room"></div>
+        <div><button class="btn btn-primary" type="submit" style="margin-top:26px">Add</button></div>
+      </form>
+    </div>
+
+    <div class="card">
+      <h3>Current Entries</h3>
+      <div style="overflow-x:auto">
+        <table>
+          <thead>
+            <tr><th>#</th><th>Day</th><th>Time Slot</th><th>Subject</th><th>Teacher</th><th>Room</th><th>Action</th></tr>
+          </thead>
+          <tbody>
+            {% for e in (timetable.classes or []) %}
+            <tr>
+              <td>{{ loop.index0 }}</td>
+              <td>{{ e.day }}</td>
+              <td>{{ e.time_slot }}</td>
+              <td>{{ e.subject }}</td>
+              <td>{{ e.teacher }}</td>
+              <td>{{ e.room }}</td>
+              <td>
+                <form method="POST" action="{{ url_for('admin_timetable_delete_entry') }}">
+                  <input type="hidden" name="department" value="{{ selected_department }}">
+                  <input type="hidden" name="year" value="{{ selected_year }}">
+                  <input type="hidden" name="division" value="{{ selected_div }}">
+                  <input type="hidden" name="index" value="{{ loop.index0 }}">
+                  <button class="btn btn-danger" type="submit">Delete</button>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</main>
+</body>
+</html>

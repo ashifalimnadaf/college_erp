@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin | Reports</title>
+  <style>
+    * { box-sizing: border-box; font-family: 'Poppins', 'Segoe UI', sans-serif; }
+    body { background: #f7f9fc; color: #2c3e50; }
+    .container { width: 95%; max-width: 1100px; margin: 40px auto; }
+    h1 { color: #3f2b96; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 16px; }
+    .card { background: #fff; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); padding: 20px; }
+    .topbar { display:flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .topbar a { color:#3f2b96; text-decoration:none; }
+    .btn { border: none; border-radius: 8px; padding: 10px 14px; cursor: pointer; color: #fff; }
+    .btn-primary { background: linear-gradient(90deg,#3f2b96,#6a4eff); }
+    .btn-secondary { background: #f1f1f1; color: #333; }
+    .exports { margin-top: 16px; }
+    .exports a { margin-right: 10px; text-decoration:none; }
+    .exports .btn-secondary { display:inline-block; }
+
+        header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, #3f2b96, #a8c0ff);
+  color: white;
+  padding: 20px 40px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo-section img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.logo-section h1 {
+  color: white;
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.user-section a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: white;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.user-section a:hover {
+  color: #ffeb3b;
+}
+
+.user-img {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+}
+.back-link {
+  margin: 30px 0px 50px 30px;
+}
+
+.back-link a {
+  text-decoration: none;
+  color: #3f51b5;
+  font-weight: 500;
+  transition: 0.3s ease;
+}
+
+.back-link a:hover {
+  text-decoration: underline;
+  color: #2c3eaa;
+}
+  </style>
+</head>
+<body><header>
+      <div class="logo-section">
+      <img src="https://tse4.mm.bing.net/th/id/OIP.LRim0dz7N2w2dTImQCh08gHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" alt="College Logo" class="logo">
+      <h1>AGMR COLLEGE OF ENGINEERING AND TECHNOLOGY</h1>
+    </div>
+    <div class="user-section">
+  
+      </div>
+    </header>
+    <main>
+    <div class="back-link">
+      <a href="{{ url_for('admin_dashboard') }}">← Back to Dashboard</a></div>
+  
+  <div class="container">
+    <div class="topbar">
+      <h1>Reports</h1>
+      
+    </div>
+    <div class="cards">
+      <div class="card"><h3>Students</h3><p>{{ stats.students }}</p></div>
+      <div class="card"><h3>Teachers</h3><p>{{ stats.teachers }}</p></div>
+      <div class="card"><h3>Admins</h3><p>{{ stats.admins }}</p></div>
+      <div class="card"><h3>Courses</h3><p>{{ stats.courses }}</p></div>
+      <div class="card"><h3>Attendance Records</h3><p>{{ stats.attendance }}</p></div>
+      <div class="card"><h3>Grades</h3><p>{{ stats.grades }}</p></div>
+      <div class="card"><h3>Notes</h3><p>{{ stats.notes }}</p></div>
+      <div class="card"><h3>Syllabus</h3><p>{{ stats.syllabus }}</p></div>
+    </div>
+    <div class="exports">
+      <a class="btn btn-secondary" href="{{ url_for('admin_reports_export', export_type='users') }}">Export Users CSV</a>
+      <a class="btn btn-secondary" href="{{ url_for('admin_reports_export', export_type='courses') }}">Export Courses CSV</a>
+    </div>
+  </div>
+  </main>
+</body>
+</html>

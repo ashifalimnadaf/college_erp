@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+  /* ===== Base Styles ===== */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', 'Segoe UI', sans-serif;
+  }
+
+  body {
+    background: #f7f8fc;
+    color: #2c3e50;
+  }
+
+  /* ===== Layout ===== */
+ 
+        header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, #3f2b96, #a8c0ff);
+  color: white;
+  padding: 20px 40px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo-section img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.logo-section h1 {
+  color: white;
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.user-section  {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: white;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.user-section a:hover {
+  color: #ffeb3b;
+}
+
+.user-img {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+}
+.back-link {
+  margin: 30px 0px 50px 30px;
+}
+
+.back-link a {
+  text-decoration: none;
+  color: #3f51b5;
+  font-weight: 500;
+  transition: 0.3s ease;
+}
+
+.back-link a:hover {
+  text-decoration: underline;
+  color: #2c3eaa;
+}
+
+  /* ===== Cards Section ===== */
+ .dashboard-cards {
+  display: grid;
+  margin: 50px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 5rem;
+}
+
+.card {
+  height: 150px;
+  width: 300px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at top left, rgba(63,81,181,0.1), transparent 60%);
+  transition: all 0.5s ease;
+  transform: rotate(45deg);
+}
+
+.card:hover::before {
+  background: radial-gradient(circle at top left, rgba(63,81,181,0.3), transparent 60%);
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 25px rgba(63, 81, 181, 0.2);
+}
+
+.card h3 {
+  color: #3f2b96;
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 0.8rem;
+}
+
+.card p {
+  color: #666;
+  font-size: 0.95rem;
+}
+.dashboard-cards a.card-btn {
+  text-decoration: none;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  transition: 0.3s ease;
+}
+
+.btn-primary {
+  background-color: #3f51b5;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #303f9f;
+}
+
+  /* ===== Scrollbar Styling ===== */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #b0b0b0;
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #888;
+  }
+
+  
+.user-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.logout-btn {
+  background-color: #ff5252;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 30px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.logout-btn:hover {
+  background-color: #e53935;
+  transform: translateY(-2px);
+}
+</style>
+
+</head>
+<body>
+<header>
+      <div class="logo-section">
+      <img src="https://tse4.mm.bing.net/th/id/OIP.LRim0dz7N2w2dTImQCh08gHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" alt="College Logo" class="logo">
+      <h1>AGMR COLLEGE OF ENGINEERING AND TECHNOLOGY</h1>
+    </div>
+    <div class="user-section">
+      <div class="user-info">
+        <span>Welcome, {{ user.name }}</span>
+        <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+      </div>
+
+</div>
+    </header>
+<main>
+
+    <div class="content">
+        <div class="dashboard-cards">
+          <a href="{{ url_for('admin_users') }}" class="card-btn">
+          <div class="card">
+            <h3>User Management</h3>
+          </div></a>
+          <a href="{{ url_for('admin_courses') }}" class="card-btn">
+          <div class="card">
+            <h3>Course Management</h3>
+          </div></a>
+          <a href="{{ url_for('admin_faculty') }}" class="card-btn">
+          <div class="card">
+            <h3>Faculty Management</h3>
+          </div></a>
+          <a href="{{ url_for('admin_students') }}" class="card-btn">
+          <div class="card">
+            <h3>student Management</h3>
+          </div></a>
+          <a href="{{ url_for('admin_reports') }}" class="card-btn">
+          <div class="card">
+            <h3>Reports</h3>
+          </div></a>
+          <a href="{{ url_for('manage_notifications') }}" class="card-btn">
+          <div class="card">
+            <h3>Notifications</h3>
+          </div></a>
+          <a href="{{ url_for('admin_classes') }}" class="card-btn">
+          <div class="card">
+            <h3>Class Management</h3>
+          </div></a>
+          <a href="{{ url_for('admin_timetable') }}" class="card-btn">
+          <div class="card">
+            <h3>Timetable</h3>
+          </div></a>
+        </div>
+      </div>
+      
+      </div>
+    </div>
+  </div>
+  </main>
+</body>
+</html>

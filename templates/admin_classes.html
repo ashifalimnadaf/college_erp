@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin | Classes</title>
+  <style>
+    * {margin:0; padding:0; box-sizing:border-box; font-family:'Poppins','Segoe UI',sans-serif}
+    body { background:#f7f9fc; color:#2c3e50 }
+    .container { width:95%; max-width:1100px; margin:40px auto }
+    h1 { color:#3f2b96 }
+    .card { background:#fff; border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.08); padding:20px; margin-top:20px }
+    .grid { display:grid; grid-template-columns:1fr 1fr; gap:20px }
+    label { display:block; margin-bottom:6px; color:#444; font-weight:600 }
+    input, select, textarea { width:100%; padding:10px 12px; border:1px solid #ccc; border-radius:8px }
+    .btn { border:none; border-radius:8px; padding:10px 14px; cursor:pointer; color:#fff }
+    .btn-primary { background: linear-gradient(90deg,#3f2b96,#6a4eff) }
+    table { width:100%; border-collapse:collapse }
+    th, td { border-bottom:1px solid #eee; padding:10px; text-align:left }
+    .topbar { display:flex; justify-content:space-between; align-items:center }
+    .alert { padding:12px; border-radius:8px; margin-bottom:12px }
+    .alert-success { background:#e6ffed; color:#276749 }
+    .alert-danger { background:#fdecec; color:#c53030 }
+    .back-link { margin: 20px 0 }
+    .back-link a { color:#3f2b96; text-decoration:none }
+  </style>
+</head>
+<body>
+<header>
+  <div class="logo-section">
+    <img src="https://tse4.mm.bing.net/th/id/OIP.LRim0dz7N2w2dTImQCh08gHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" alt="College Logo" class="logo" style="width:50px;height:50px;border-radius:50%">
+    <h1>AGMR COLLEGE OF ENGINEERING AND TECHNOLOGY</h1>
+  </div>
+</header>
+<main>
+  <div class="container">
+    <div class="back-link"><a href="{{ url_for('admin_dashboard') }}">← Back to Dashboard</a></div>
+    <div class="topbar"><h1>Classes</h1></div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <div class="card">
+      <h3>Create Class</h3>
+      <form method="POST" action="{{ url_for('admin_classes_create') }}" class="grid">
+        <div><label>Department</label><input name="department" placeholder="e.g. ECE"></div>
+        <div><label>Division</label><input name="division" placeholder="e.g. A" required></div>
+        <div><label>Year</label>
+          <select name="year" required>
+            <option value="">Select Year</option>
+            <option value="1st Year">1st Year</option>
+            <option value="2nd Year">2nd Year</option>
+            <option value="3rd Year">3rd Year</option>
+            <option value="4th Year">4th Year</option>
+          </select>
+        </div>
+        <div><button class="btn btn-primary" type="submit" style="margin-top:26px">Create</button></div>
+      </form>
+    </div>
+
+    <div class="card">
+      <h3>All Classes</h3>
+      <div style="overflow-x:auto">
+        <table>
+          <thead>
+            <tr><th>Division</th><th>Department</th><th>Year</th></tr>
+          </thead>
+          <tbody>
+            {% for c in classes %}
+            <tr>
+              <td>{{ c.division }}</td>
+              <td>{{ c.department }}</td>
+              <td>{{ c.year }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</main>
+</body>
+</html>

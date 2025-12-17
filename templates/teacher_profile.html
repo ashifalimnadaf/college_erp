@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teacher Profile</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='teach_dash.css') }}">
+  <style>
+    /* Global Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #e3f2fd, #f5f7fa);
+      color: #333;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(90deg, #3f2b96, #a8c0ff);
+      color: white;
+      padding: 20px 40px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .logo-section img {
+      width: 50px;
+      border-radius: 8px;
+    }
+
+    .logo-section h1 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .user-section a {
+      color: white;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      font-size: 1.1rem;
+    }
+
+    .user-img {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      border: 2px solid #ffd369;
+    }
+
+    .username {
+      font-weight: 500;
+    }
+
+    main {
+      padding: 40px 60px;
+    }
+
+    /* Profile Container */
+    .profile-container {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      max-width: 950px;
+      margin: 0 auto;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .profile-header {
+      display: flex;
+      align-items: center;
+      border-bottom: 2px solid #f0f0f0;
+      padding-bottom: 20px;
+      margin-bottom: 25px;
+    }
+
+    .profile-avatar {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #a8c0ff, #3f2b96);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.8rem;
+      color: white;
+      margin-right: 25px;
+      font-weight: bold;
+      text-transform: uppercase;
+      box-shadow: 0 4px 10px rgba(63, 43, 150, 0.3);
+    }
+
+    .profile-info h3 {
+      font-size: 1.6rem;
+      margin-bottom: 6px;
+      color: #222;
+    }
+
+    .profile-info p {
+      font-size: 1rem;
+      color: #555;
+      margin-bottom: 4px;
+    }
+
+    /* Profile Details */
+    .profile-details {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    .detail-group {
+      background: #fafafa;
+      border-radius: 8px;
+      padding: 20px;
+      border-left: 5px solid #3f2b96;
+      transition: all 0.3s ease;
+    }
+
+    .detail-group:hover {
+      box-shadow: 0 4px 12px rgba(63, 43, 150, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .detail-group h4 {
+      margin-bottom: 12px;
+      font-size: 1.2rem;
+      color: #3f2b96;
+      font-weight: 600;
+    }
+
+    .detail-item {
+      display: flex;
+      margin-bottom: 10px;
+    }
+
+    .detail-label {
+      width: 180px;
+      font-weight: 600;
+      color: #444;
+    }
+
+    .detail-value {
+      flex: 1;
+      color: #666;
+    }
+
+    .back-link a {
+  display: inline-block;
+  margin-bottom: 20px;
+  color: #3f2b96;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.back-link a:hover {
+  color: #a8c0ff;
+}
+
+
+    /* Buttons */
+    .edit-profile-btn {
+      background: linear-gradient(90deg, #3f2b96, #a8c0ff);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 25px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(63, 43, 150, 0.2);
+    }
+
+    .edit-profile-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 15px rgba(63, 43, 150, 0.3);
+    }
+
+    /* Form */
+    #edit-profile-form {
+      background: #fdfdfd;
+      border-radius: 10px;
+      padding: 25px;
+      margin-top: 30px;
+      border: 1px solid #eee;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: #333;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 1rem;
+      transition: 0.3s ease;
+    }
+
+    .form-control:focus {
+      border-color: #3f2b96;
+      box-shadow: 0 0 5px rgba(63, 43, 150, 0.2);
+      outline: none;
+    }
+
+    /* Alerts */
+    .alert {
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      font-weight: 500;
+    }
+
+    .alert-success {
+      background-color: #eafbea;
+      color: #2e7d32;
+      border: 1px solid #c8e6c9;
+    }
+
+    /* Animation */
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+     <div class="logo-section">
+      <img src="https://tse4.mm.bing.net/th/id/OIP.LRim0dz7N2w2dTImQCh08gHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" alt="College Logo" class="logo">
+      <h1>AGMR COLLEGE OF ENGINEERING AND TECHNOLOGY</h1>
+    </div>
+    <div class="user-section">
+        <a href="{{ url_for('teacher_profile') }}">
+          <img src="https://th.bing.com/th/id/OIP.ukyBvqWlVM8RE5pSjQNchwHaHa?w=191&h=191&c=7&r=0&o=7&cb=ucfimg2&dpr=1.3&pid=1.7&rm=3&ucfimg=1" alt="User Avatar" class="user-img">
+          <span class="username">{{ user.name }}</span>
+        </a>
+      </div>
+    </header>
+
+    <main>
+      <div class="back-link">
+      <a href="{{ url_for('teacher_dashboard') }}">← Back to Dashboard</a></div>
+
+      <div class="content">
+        <h2>My Profile</h2>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        
+        <div class="profile-container">
+          <div class="profile-header">
+            <div class="profile-avatar">
+              {{ user.name[0] }}
+            </div>
+            <div class="profile-info">
+              <h3>{{ user.name }}</h3>
+              <p>{{ user.email }}</p>
+              <p>Teacher ID: {{ user.teacher_id }}</p>
+            </div>
+          </div>
+          
+          <div class="profile-details">
+            <div class="detail-group">
+              <h4>Personal Information</h4>
+              <div class="detail-item">
+                <div class="detail-label">Full Name</div>
+                <div class="detail-value">{{ user.name }}</div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">Email</div>
+                <div class="detail-value">{{ user.email }}</div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">Phone</div>
+                <div class="detail-value">{{ user.phone if user.phone else 'Not provided' }}</div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">Date of Birth</div>
+                <div class="detail-value">{{ user.dob.strftime('%d %B, %Y') if user.dob else 'Not provided' }}</div>
+              </div>
+            </div>
+            
+            <div class="detail-group">
+              <h4>Professional Information</h4>
+              <div class="detail-item">
+                <div class="detail-label">Department</div>
+                <div class="detail-value">{{ user.department }}</div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">Designation</div>
+                <div class="detail-value">{{ user.designation }}</div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">Joining Date</div>
+                <div class="detail-value">{{ user.joining_date.strftime('%d %B, %Y') if user.joining_date else 'Not provided' }}</div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">Subjects Taught</div>
+                <div class="detail-value">
+                  {% if user.subjects %}
+                    {{ ', '.join(user.subjects) }}
+                  {% else %}
+                    Not provided
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+            
+            <div class="detail-group">
+              <h4>Address Information</h4>
+              <div class="detail-item">
+                <div class="detail-label">Address</div>
+                <div class="detail-value">{{ user.address if user.address else 'Not provided' }}</div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">City</div>
+                <div class="detail-value">{{ user.city if user.city else 'Not provided' }}</div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">State</div>
+                <div class="detail-value">{{ user.state if user.state else 'Not provided' }}</div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">Postal Code</div>
+                <div class="detail-value">{{ user.postal_code if user.postal_code else 'Not provided' }}</div>
+              </div>
+            </div>
+          </div>
+          
+          <button id="edit-profile-btn" class="edit-profile-btn">Edit Profile</button>
+          
+          <div id="edit-profile-form" style="display: none; margin-top: 30px;">
+            <h3>Edit Profile</h3>
+            <form action="{{ url_for('update_teacher_profile') }}" method="POST">
+              <div class="form-group">
+                <label for="phone">Phone</label>
+                <input type="text" id="phone" name="phone" class="form-control" value="{{ user.phone if user.phone }}">
+              </div>
+              
+              <div class="form-group">
+                <label for="address">Address</label>
+                <textarea id="address" name="address" class="form-control" rows="2">{{ user.address if user.address }}</textarea>
+              </div>
+              
+              <div class="form-group">
+                <label for="city">City</label>
+                <input type="text" id="city" name="city" class="form-control" value="{{ user.city if user.city }}">
+              </div>
+              
+              <div class="form-group">
+                <label for="state">State</label>
+                <input type="text" id="state" name="state" class="form-control" value="{{ user.state if user.state }}">
+              </div>
+              
+              <div class="form-group">
+                <label for="postal_code">Postal Code</label>
+                <input type="text" id="postal_code" name="postal_code" class="form-control" value="{{ user.postal_code if user.postal_code }}">
+              </div>
+              
+              <button type="submit" class="edit-profile-btn">Save Changes</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  
+  <script>
+    document.getElementById('edit-profile-btn').addEventListener('click', function() {
+      const form = document.getElementById('edit-profile-form');
+      if (form.style.display === 'none') {
+        form.style.display = 'block';
+        this.textContent = 'Cancel';
+      } else {
+        form.style.display = 'none';
+        this.textContent = 'Edit Profile';
+      }
+    });
+  </script>
+</body>
+</html>

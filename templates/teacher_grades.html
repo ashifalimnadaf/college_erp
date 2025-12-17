@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Teacher Grades</title>
+    <style>
+/* Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: #f0f4f8;
+  color: #1f2937;
+}
+
+/* Header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 32px;
+  background: linear-gradient(90deg, #3f2b96, #a8c0ff);
+  color: #fff;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+header h1 {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+header .user {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+header .user .name {
+  font-weight: 500;
+}
+.logo-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-section img {
+      width: 50px;
+      border-radius: 50%;
+      background: #fff;
+      padding: 4px;
+    }
+
+    .logo-section h1 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .user-section a {
+      color: white;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 16px;
+      border-radius: 30px;
+      background: rgba(255, 255, 255, 0.15);
+      transition: all 0.3s ease;
+    }
+
+    .user-section a:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .user-img {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      border: 2px solid #ffd369;
+      object-fit: cover;
+    }
+
+    .username {
+      font-weight: 500;
+      font-size: 1rem;
+    }
+/* Container */
+.container {
+  max-width: 1100px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+/* Card */
+.card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  padding: 24px;
+  margin-bottom: 24px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+}
+
+.card h2 {
+  margin-bottom: 16px;
+  font-size: 1.2rem;
+  color: #3f2b96;
+}
+
+/* Controls Grid */
+.controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+}
+
+.controls label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #4b5563;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.controls select,
+.controls input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.controls select:focus,
+.controls input:focus {
+  outline: none;
+  border-color: #3f2b96;
+  box-shadow: 0 0 6px rgba(63,43,150,0.25);
+}
+
+.controls button {
+  padding: 10px 16px;
+  background: linear-gradient(90deg, #3f2b96, #a8c0ff);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.controls button:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.controls button:hover:not(:disabled) {
+  transform: scale(1.05);
+  box-shadow: 0 6px 15px rgba(63,43,150,0.3);
+}
+
+/* Notice Text */
+.notice {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-top: 8px;
+}
+
+/* Table Styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+thead {
+  background: #3f2b96;
+  color: #fff;
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+}
+
+th, td {
+  padding: 12px 15px;
+  text-align: left;
+}
+
+tbody tr:nth-child(even) {
+  background: #f9fafb;
+}
+
+tbody tr:hover {
+  background: #e0e7ff;
+  transition: 0.3s;
+}
+
+td input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+td input:focus {
+  outline: none;
+  border-color: #3f2b96;
+  box-shadow: 0 0 6px rgba(63,43,150,0.2);
+}
+
+/* Action Buttons */
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.actions button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  color: #fff;
+  transition: all 0.3s ease;
+}
+
+.actions .save {
+  background: linear-gradient(90deg, #10b981, #34d399);
+}
+
+.actions .save:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 15px rgba(16,185,129,0.3);
+}
+
+/* Flash Messages */
+.flash {
+  padding: 12px 16px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+.flash.success {
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.flash.error {
+  background: #fef2f2;
+  color: #7f1d1d;
+  border: 1px solid #fecaca;
+}
+
+/* Responsive */
+@media(max-width:768px){
+  .controls {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media(max-width:480px){
+  .controls {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+
+
+</head>
+<body>
+    <header>
+        <div class="logo-section">
+            <img src="https://tse4.mm.bing.net/th/id/OIP.LRim0dz7N2w2dTImQCh08gHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" alt="College Logo" class="logo">
+            <h1>AGMR COLLEGE OF ENGINEERING AND TECHNOLOGY</h1>
+        </div>
+        <div class="user-section">
+            <a href="{{ url_for('teacher_profile') }}">
+            <img src="https://th.bing.com/th/id/OIP.ukyBvqWlVM8RE5pSjQNchwHaHa?w=191&h=191&c=7&r=0&o=7&cb=ucfimg2&dpr=1.3&pid=1.7&rm=3&ucfimg=1" alt="User Avatar" class="user-img">
+            <span class="username">{{ user.name }}</span>
+            </a>
+        </div>
+    </header>
+    <div class="back-link">
+      <a href="{{ url_for('teacher_dashboard') }}">← Back to Dashboard</a></div>
+    
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="flash {{ 'success' if category=='success' else 'error' }}">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <div class="back-link">
+        <a href="{{ url_for('teacher_dashboard') }}">← Back to Dashboard</a></div>
+    <div class="title">Grades Management</div>
+        <div class="user">
+            <div class="name">{{ user.name }}</div>
+            <a href="{{ url_for('logout') }}" style="color:#fff; text-decoration:none;">Logout</a>
+        </div>
+        <div class="card">
+            <h2>Filters</h2>
+            <div class="controls">
+                <div>
+                    <label>Class</label>
+                    <select id="classSelect">
+                        <option value="" selected disabled>Select class</option>
+                        {% for cls in classes %}
+                          <option value="{{ cls }}">{{ cls }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label>Subject</label>
+                    <select id="subjectSelect">
+                        <option value="" selected disabled>Select subject</option>
+                        {% for subj in subjects %}
+                          <option value="{{ subj }}">{{ subj }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label>Exam Type</label>
+                    <select id="examTypeSelect">
+                        <option value="" selected disabled>Select exam</option>
+                        <option value="Midterm">Midterm</option>
+                        <option value="Final">Final</option>
+                        <option value="Assignment">Assignment</option>
+                        <option value="Quiz">Quiz</option>
+                    </select>
+                </div>
+                <div style="display:flex; align-items:flex-end;">
+                    <button id="loadBtn" disabled>Load Students</button>
+                </div>
+            </div>
+            <div class="notice" style="margin-top:8px;">Choose class, subject, and exam type to load the roster.</div>
+        </div>
+
+        <div class="card" id="gradesCard" style="display:none;">
+            <h2>Enter Grades</h2>
+            <div style="overflow-x:auto;">
+                <table id="gradesTable">
+                    <thead>
+                        <tr>
+                            <th>Roll No.</th>
+                            <th>Student Name</th>
+                            <th>Marks</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="actions">
+                <button class="save" id="saveBtn" disabled>Save Grades</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const classEl = document.getElementById('classSelect');
+        const subjectEl = document.getElementById('subjectSelect');
+        const examEl = document.getElementById('examTypeSelect');
+        const loadBtn = document.getElementById('loadBtn');
+        const saveBtn = document.getElementById('saveBtn');
+        const gradesCard = document.getElementById('gradesCard');
+        const tbody = document.querySelector('#gradesTable tbody');
+
+        function updateLoadButton() {
+            loadBtn.disabled = !(classEl.value && subjectEl.value && examEl.value);
+        }
+        classEl.addEventListener('change', updateLoadButton);
+        subjectEl.addEventListener('change', updateLoadButton);
+        examEl.addEventListener('change', updateLoadButton);
+
+        loadBtn.addEventListener('click', async () => {
+            const cls = classEl.value;
+            if (!cls) return;
+            try {
+                const res = await fetch(`/api/students/${encodeURIComponent(cls)}`);
+                const json = await res.json();
+                const students = json.students || json; // support both API variants
+                tbody.innerHTML = '';
+                students.forEach(s => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${s.roll_number || '-'}</td>
+                        <td>${s.name || s.username || ''}</td>
+                        <td><input type="number" min="0" max="100" step="1" data-student-id="${s._id || s.id}" placeholder="Enter marks" /></td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+                gradesCard.style.display = 'block';
+                saveBtn.disabled = students.length === 0;
+            } catch (e) {
+                alert('Failed to load students for the selected class');
+            }
+        });
+
+        saveBtn.addEventListener('click', async () => {
+            const cls = classEl.value;
+            const subject = subjectEl.value;
+            const examType = examEl.value;
+            const inputs = Array.from(tbody.querySelectorAll('input[data-student-id]'));
+            const grades = inputs
+                .map(i => ({ student_id: i.getAttribute('data-student-id'), marks: i.value ? Number(i.value) : null }))
+                .filter(r => r.marks !== null);
+
+            if (grades.length === 0) {
+                alert('Please enter at least one mark before saving.');
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/grades/update', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ class: cls, subject, exam_type: examType, grades })
+                });
+                const json = await res.json();
+                if (json.success) {
+                    alert('Grades updated successfully');
+                } else {
+                    alert(json.error || 'Failed to update grades');
+                }
+            } catch (e) {
+                alert('Network error while updating grades');
+            }
+        });
+    </script>
+</body>
+</html>

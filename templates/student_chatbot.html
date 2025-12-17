@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chatbot | College ERP</title>
+  <style>
+    /* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: #f4f7fc;
+  color: #333;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(90deg, #3f2b96, #a8c0ff);
+  color: white;
+  padding: 18px 40px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: white;
+}
+
+.navbar-right a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.navbar-right .user-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+/* Chat Container */
+.chat-container {
+  margin-top: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: calc(100vh - 80px);
+  margin: 75px 150px;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.chat-box {
+  flex-grow: 1;
+  overflow-y: auto;
+  background: white;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.bot-message, .user-message {
+  display: flex;
+  margin: 10px 0;
+}
+
+.bot-message .message {
+  background: #ecf0f1;
+  color: #2c3e50;
+  align-self: flex-start;
+  border-radius: 15px 15px 15px 0;
+  padding: 10px 15px;
+  max-width: 70%;
+}
+
+.user-message {
+  justify-content: flex-end;
+}
+
+.user-message .message {
+  background: #16a085;
+  color: white;
+  border-radius: 15px 15px 0 15px;
+  padding: 10px 15px;
+  max-width: 70%;
+}
+
+/* Input Area */
+.input-area {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.input-area input {
+  flex-grow: 1;
+  padding: 12px;
+  border-radius: 25px;
+  border: 1px solid #ccc;
+  outline: none;
+  font-size: 15px;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.input-area button {
+  padding: 10px 20px;
+  background: #16a085;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.3s ease;
+}
+
+.input-area button:hover {
+  background: #13856f;
+}
+
+/* Scrollbar */
+.chat-box::-webkit-scrollbar {
+  width: 8px;
+}
+.chat-box::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px 20px;
+  }
+
+  .chat-container {
+    padding: 10px;
+  }
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="navbar-left">
+      <img src="https://tse4.mm.bing.net/th/id/OIP.LRim0dz7N2w2dTImQCh08gHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" alt="College Logo" class="logo">
+      <h1>College ERP</h1>
+    </div>
+    <div class="navbar-right">
+      <a href="{{ url_for('student_account') }}">
+          <img src="https://th.bing.com/th/id/OIP.ukyBvqWlVM8RE5pSjQNchwHaHa?w=191&h=191&c=7&r=0&o=7&cb=ucfimg2&dpr=1.3&pid=1.7&rm=3&ucfimg=1" alt="User Avatar" class="user-img">
+          <span class="username">{{ user.name }}</span>
+        </a>
+    </div>
+  </header>
+
+  <!-- Chatbot Section -->
+  <main class="chat-container">
+    <div class="chat-box" id="chat-box">
+      <div class="bot-message">
+        <div class="message">
+          👋 Hello {{ user.name }}! How can I assist you today?
+        </div>
+      </div>
+    </div>
+
+    <div class="input-area">
+      <input type="text" id="user-input" placeholder="Type your message..." />
+      <button id="send-btn">Send</button>
+    </div>
+  </main>
+
+  <script>
+    const sendBtn = document.getElementById("send-btn");
+    const chatBox = document.getElementById("chat-box");
+    const userInput = document.getElementById("user-input");
+
+    sendBtn.addEventListener("click", () => {
+      const message = userInput.value.trim();
+      if (message === "") return;
+
+      // User message
+      const userMsg = document.createElement("div");
+      userMsg.classList.add("user-message");
+      userMsg.innerHTML = `<div class="message">${message}</div>`;
+      chatBox.appendChild(userMsg);
+
+      // Scroll to bottom
+      chatBox.scrollTop = chatBox.scrollHeight;
+      userInput.value = "";
+
+      // Bot reply simulation
+      setTimeout(() => {
+        const botMsg = document.createElement("div");
+        botMsg.classList.add("bot-message");
+
+        // Basic reply logic
+        let reply = "";
+        if (message.toLowerCase().includes("attendance")) {
+          reply = "Your current attendance is 87%. Keep it up! 📊";
+        } else if (message.toLowerCase().includes("notes")) {
+          reply = "You can view all your notes under the 'Notes' section 📚.";
+        } else if (message.toLowerCase().includes("exam")) {
+          reply = "Your next exam is on 25 Oct 2025. Don't forget to revise! 🧠";
+        } else {
+          reply = "I'm not sure about that 🤔. Please try asking about attendance, notes, or exams.";
+        }
+
+        botMsg.innerHTML = `<div class="message">${reply}</div>`;
+        chatBox.appendChild(botMsg);
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }, 700);
+    });
+
+    // Allow Enter key to send
+    userInput.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") sendBtn.click();
+    });
+  </script>
+
+</body>
+</html>

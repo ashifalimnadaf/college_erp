@@ -1,0 +1,26 @@
+{
+  "type": "Compass Connections",
+  "version": {
+    "$numberInt": "1"
+  },
+  "connections": [
+    {
+      "id": "cedde66a-5c50-460f-85b7-142d33c95333",
+      "lastUsed": {
+        "$date": {
+          "$numberLong": "1762954981064"
+        }
+      },
+      "favorite": {
+        "name": "mini_project"
+      },
+      "savedConnectionType": "recent",
+      "connectionOptions": {
+        "connectionString": "mongodb+srv://college_erp:clg_erp@cluster0.l3g4xjz.mongodb.net/",
+        "oidc": {
+          "serializedState": "eyJvaWRjUGx1Z2luU3RhdGVWZXJzaW9uIjoxLCJzdGF0ZSI6W119"
+        }
+      }
+    }
+  ]
+}
